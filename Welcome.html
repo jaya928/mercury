@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            justify-content: flex-start;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            width: 100%;
+        }
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            color: black;
+            background-color: white;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            width: 80%;
+            text-align: center;
+        }
+        .active {
+            display: block;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .image-gallery {
+            margin-top: 20px;
+        }
+        .image-gallery img {
+            width: 200px;
+            height: auto;
+            margin: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tabs">
+        <button class="tab" onclick="showTab('home')">Home</button>
+        <button class="tab" onclick="showTab('dummy')">Dummy Text</button>
+        <button class="tab" onclick="showTab('upload')">Upload Image</button>
+    </div>
+
+    <!-- Home Tab -->
+    <div id="home" class="tab-content active">
+        <h1>Hi Jaya!</h1>
+        <p>Welcome to your personalized page.</p>
+    </div>
+
+    <!-- Dummy Text Tab -->
+    <div id="dummy" class="tab-content">
+        <h2>Dummy Text Section</h2>
+        <p>Lorem ipsum dolor sit amet...</p>
+    </div>
+
+    <!-- Upload Image Tab -->
+    <div id="upload" class="tab-content">
+        <h2>Upload an Image</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <button type="submit">Upload Image</button>
+        </form>
+
+        <!-- Display Uploaded Images -->
+        <div class="image-gallery" id="imageGallery">
+            <h3>Uploaded Images</h3>
+            <!-- Images will appear here after upload -->
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            const activeTab = document.getElementById(tabName);
+            activeTab.classList.add('active');
+        }
+
+        // Handle image upload
+        document.getElementById('uploadForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent form submission
+            const formData = new FormData(this);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the image gallery with the new image
+                    const imgElement = document.createElement('img');
+                    imgElement.src = data.imageUrl; // Assuming the image URL is returned
+                    document.getElementById('imageGallery').appendChild(imgElement);
+                } else {
+                    alert('Image upload failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

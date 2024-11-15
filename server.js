@@ -36,6 +36,12 @@ app.get('/admin.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
+// Check if DATABASE_URL is set
+if (!process.env.DATABASE_URL) {
+  console.error('DATABASE_URL environment variable is not set!');
+  process.exit(1); // Stop the application if the DATABASE_URL is not set
+}
+
 // PostgreSQL setup
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,  // Use DATABASE_URL from environment variable

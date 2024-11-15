@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const { Pool } = require('pg'); // Import pg to connect to PostgreSQL
 const cors = require('cors'); // Import CORS
 const app = express();
-const port = process.env.PORT || 3000; // Use environment port or default to 3000
+const port = process.env.PORT || 10000; // Use environment port or default to 10000
 
 // Log the absolute path to the 'images' folder
 console.log('Images directory:', path.join(__dirname, 'images'));

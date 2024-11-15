@@ -60,6 +60,16 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     return res.status(400).send('No image uploaded');
   }
 
+  // Log the values before insertion to the database
+  console.log('Inserting into database with values:', [
+    name,
+    age,
+    gender,
+    location,
+    image.filename,            // Image file name
+    path.join(__dirname, 'uploads', image.filename) // Image file path
+  ]);
+
   // Insert data into PostgreSQL database
   try {
     const query = `

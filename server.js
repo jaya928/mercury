@@ -40,7 +40,7 @@ app.get('/admin.html', (req, res) => {
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,  // Use DATABASE_URL from environment variable
   ssl: {
-    rejectUnauthorized: false, // Add SSL configuration for secure connection
+    rejectUnauthorized: false, // Add SSL configuration for secure connection (needed for cloud-hosted PostgreSQL)
   },
 });
 

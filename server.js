@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const { Pool } = require('pg'); // Import pg to connect to PostgreSQL
 const cors = require('cors'); // Import CORS
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // Use environment port or default to 3000
 
 // Log the absolute path to the 'images' folder
 console.log('Images directory:', path.join(__dirname, 'images'));
@@ -38,11 +38,10 @@ app.get('/admin.html', (req, res) => {
 
 // PostgreSQL setup
 const pool = new Pool({
-  user: 'my_user',          // Your PostgreSQL user
-  host: 'localhost',         // Host (usually localhost)
-  database: 'my_database',   // Name of the database you created
-  password: 'my_password',   // Password for the user
-  port: 5432                 // Default PostgreSQL port
+  connectionString: process.env.DATABASE_URL,  // Use DATABASE_URL from environment variable
+  ssl: {
+    rejectUnauthorized: false, // Add SSL configuration for secure connection
+  },
 });
 
 // Handle form submission and file upload to /upload route
